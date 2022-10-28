@@ -18,10 +18,7 @@ fn to_translation(vector: &Vector3) -> Translation3<f32> {
 fn main() {
     let mut window = Window::new("spheres");
     window.set_light(Light::StickToCamera);
-    let mut physics_spheres = Spheres {
-        positions: vec![Vector3(0., 0., 0.), Vector3(10., 0., 0.)],
-        velocities: vec![Vector3(1., 0., 0.), Vector3(0., 0., 0.)],
-    };
+    let mut physics_spheres = Spheres::random(3, 10., 2., 420);
     let mut rendered_spheres: Vec<_> = physics_spheres
         .positions
         .iter()
@@ -32,7 +29,7 @@ fn main() {
     while window.render() {
         physics_spheres.update_positions(timestep);
         std::iter::zip(physics_spheres.positions.iter(), &mut rendered_spheres).for_each(
-            |(position, rendered)| rendered.set_local_translation(to_translation(&position)),
+            |(position, rendered)| rendered.set_local_translation(to_translation(position)),
         );
     }
 }

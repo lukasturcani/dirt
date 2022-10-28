@@ -8,6 +8,7 @@ default-run = "spheres"
 
 [dependencies]
 kiss3d = "0.32"
+rand = "0.8"
 
 [profile.release]
 strip = true
