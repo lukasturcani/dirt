@@ -33,9 +33,7 @@ pub struct PositionUpdate {
 impl Spheres {
     pub fn update_positions(&mut self, timestep: Timestep) -> PositionUpdate {
         std::iter::zip(&mut self.positions, &self.velocities).for_each(|(position, velocity)| {
-            position.0 += velocity.0 * timestep.0;
-            position.1 += velocity.1 * timestep.0;
-            position.2 += velocity.2 * timestep.0;
+            *position += velocity * timestep.0;
         });
         PositionUpdate {
             simulated_time: timestep,

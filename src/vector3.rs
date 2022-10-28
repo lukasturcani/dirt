@@ -1,4 +1,4 @@
-use std::ops::Mul;
+use std::ops::{AddAssign, Mul};
 
 use rand::{
     distributions::{Standard, Uniform},
@@ -19,6 +19,14 @@ impl Distribution<Vector3> for Standard {
     }
 }
 
+impl AddAssign<Vector3> for Vector3 {
+    fn add_assign(&mut self, rhs: Vector3) {
+        self.0 += rhs.0;
+        self.1 += rhs.1;
+        self.2 += rhs.2;
+    }
+}
+
 impl Mul<f32> for Vector3 {
     type Output = Vector3;
 
@@ -27,6 +35,14 @@ impl Mul<f32> for Vector3 {
         self.1 *= rhs;
         self.2 *= rhs;
         self
+    }
+}
+
+impl Mul<f32> for &Vector3 {
+    type Output = Vector3;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vector3(self.0 * rhs, self.1 * rhs, self.2 * rhs)
     }
 }
 
