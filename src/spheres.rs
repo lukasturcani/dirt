@@ -8,6 +8,11 @@ pub struct Spheres {
     pub velocities: Vec<Vector3>,
 }
 
+pub struct Sphere {
+    pub position: Vector3,
+    pub velocity: Vector3,
+}
+
 impl Spheres {
     pub fn random(num_spheres: usize, max_position: f32, max_velocity: f32, seed: u64) -> Self {
         let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
@@ -23,6 +28,18 @@ impl Spheres {
                 .map(|velocity: Vector3| velocity * max_velocity)
                 .collect(),
         }
+    }
+
+    pub fn new(spheres: impl Iterator<Item = Sphere>) -> Self {
+        let mut result = Spheres {
+            positions: vec![],
+            velocities: vec![],
+        };
+        spheres.for_each(|sphere| {
+            result.positions.push(sphere.position);
+            result.velocities.push(sphere.velocity);
+        });
+        result
     }
 }
 
@@ -47,10 +64,13 @@ mod tests {
 
     #[test]
     fn test_positions_updated() {
-        let mut spheres = Spheres {
-            positions: vec![Vector3(0., 0., 0.)],
-            velocities: vec![Vector3(1., 0., 0.)],
-        };
+        let mut spheres = Spheres::new(
+            vec![Sphere {
+                position: Vector3(0., 0., 0.),
+                velocity: Vector3(1., 0., 0.),
+            }]
+            .into_iter(),
+        );
         spheres.update_positions(Timestep(1.));
         assert_eq!(spheres.positions, vec![Vector3(1., 0., 0.)]);
     }
