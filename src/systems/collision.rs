@@ -9,3 +9,6 @@ pub struct Collision {
 
 mod sphere_rectangle;
 pub use sphere_rectangle::*;
+
+mod sphere_plane;
+pub use sphere_plane::*;
